@@ -1,11 +1,14 @@
-ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 
-sudo apt-get install git vim
+sudo apt-get install -y git vim
 
-test -d ~/.vim || git clone https://github.com/niquola/myvim.git ~/.vim/
+
+# VIM part
+
+sudo apt-get install -y exuberant-ctags
+
 test -d ~/.vim/bundle/vundle || git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 mv ~/.vimrc ~/.vimrc.back || echo 'no .vimrc'
-echo 'source ~/.vim/.vimrc' > ~/.vimrc
+ln -s ~/dotfiles/.vimrc ~/.vimrc
 vim +BundleInstall +qall
 
 git config --global user.name "niquola"
@@ -18,11 +21,6 @@ git config --global alias.hist 'log --pretty=format:"%h %ad | %s%d [%an]" --grap
 git config --global alias.type 'cat-file -t'
 git config --global alias.dump 'cat-file -p'
 
-sudo apt-get install fish
-chsh nicola -s /usr/bin/fish
+test -f ~/.tmux.conf || ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 
-sudo apt-get install curl
-curl --create-dirs -o ~/.config/fish/functions/rvm.fish https://raw.github.com/lunks/fish-nuggets/master/functions/rvm.fish
-
-# sudo apt-get install postgresql-9.3
-# sudo su postgres -c 'createuser -s nicola'
+which tmux || sudo apt-get install -y tmux
