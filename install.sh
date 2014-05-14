@@ -1,5 +1,5 @@
-
 sudo apt-get install -y git vim
+sudo apt-get install -y software-properties-common
 
 
 # VIM part
@@ -21,6 +21,33 @@ git config --global alias.hist 'log --pretty=format:"%h %ad | %s%d [%an]" --grap
 git config --global alias.type 'cat-file -t'
 git config --global alias.dump 'cat-file -p'
 
-test -f ~/.tmux.conf || ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 
+
+#TMUX
+
+test -f ~/.tmux.conf || ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 which tmux || sudo apt-get install -y tmux
+
+#JAVA
+
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java7-installer
+
+
+#LEINIGEN
+
+test -d ~/bin || mkdir ~/bin
+
+curl https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein > ~/bin/lein
+
+chmod a+x ~/bin/lein
+
+~/bin/lein
+
+
+# POSTGRESQL
+
+sudo apt-get install -y postgresql postgresql-contrib
+sudo su postgres -c 'pg_ctlcluster 9.3 main start'
+sudo su postgres -c 'createuser -s devel' || echo 'ups'
