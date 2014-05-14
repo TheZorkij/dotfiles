@@ -51,3 +51,10 @@ chmod a+x ~/bin/lein
 sudo apt-get install -y postgresql postgresql-contrib
 sudo su postgres -c 'pg_ctlcluster 9.3 main start'
 sudo su postgres -c 'createuser -s devel' || echo 'ups'
+
+#NODE js
+curl https://raw.githubusercontent.com/creationix/nvm/v0.7.0/install.sh | sh
+source ~/.profile
+
+nvm install 0.10
+npm install -g bower grunt
