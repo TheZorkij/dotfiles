@@ -26,7 +26,7 @@ Bundle 'niquola/vim-every-day.git'
 Bundle 'mileszs/ack.vim.git'
 Bundle 'niquola/vim-hl7.git'
 " Bundle 'wuxb45/ADL.git'
-"Bundle 'https://github.com/rking/vim-detailed'
+Bundle 'https://github.com/rking/vim-detailed'
 Bundle 'https://github.com/chriskempson/base16-vim'
 Bundle 'kien/ctrlp.vim.git'
 Bundle 'ngmy/vim-rubocop.git'
@@ -38,7 +38,8 @@ Bundle 'tpope/vim-endwise.git'
 Bundle 'tpope/vim-surround.git'
 Bundle 'ervandew/supertab.git'
 Bundle 'powerman/vim-plugin-ruscmd.git'
-Bundle 'slimv.vim'
+"Bundle 'slimv.vim'
+Bundle 'https://github.com/vim-scripts/paredit.vim.git'
 Bundle 'git://github.com/tpope/vim-dispatch.git'
 Bundle 'git://github.com/tpope/vim-fireplace.git'
 Bundle 'git://github.com/tpope/vim-projectionist.git'
@@ -98,3 +99,4 @@ set nowrap
 
 autocmd BufWritePre * :FixWhitespace
 map \e :%Eval<cr>
+" let base16colorspace=256
