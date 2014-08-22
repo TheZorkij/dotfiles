@@ -14,9 +14,10 @@ Bundle 'tpope/vim-commentary.git'
 Bundle 'kchmck/vim-coffee-script.git'
 Bundle 'bronson/vim-trailing-whitespace.git'
 Bundle 'vim-scripts/taglist.vim.git'
-Bundle 'vim-scripts/netrw.vim.git'
-" Bundle 'vim-scripts/twilight256.vim.git'
+"Bundle 'vim-scripts/netrw.vim.git'
+"Bundle 'vim-scripts/twilight256.vim.git'
 Bundle 'L9'
+Bundle 'git://github.com/groenewege/vim-less.git'
 Bundle 'FuzzyFinder'
 Bundle 'TinyBufferExplorer'
 "Bundle 'Railscasts-Theme-GUIand256color'
@@ -100,3 +101,9 @@ set nowrap
 autocmd BufWritePre * :FixWhitespace
 map \e :%Eval<cr>
 " let base16colorspace=256
+set modeline
+set modelines=3
+let g:clojure_syntax_keywords = {
+      \ 'clojureMacro': ["defproject", "fact"],
+      \ 'clojureFunc': ["string/join", "string/replace"]
+      \ }
