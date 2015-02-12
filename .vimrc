@@ -10,6 +10,7 @@ Bundle 'git://github.com/tpope/vim-endwise.git'
 Bundle 'git://github.com/Lokaltog/vim-powerline.git'
 Bundle 'tpope/vim-haml.git'
 Bundle 'tpope/vim-commentary.git'
+Bundle 'https://github.com/krisajenkins/vim-pipe.git'
 " Bundle 'Lokaltog/vim-easymotion'
 Bundle 'kchmck/vim-coffee-script.git'
 Bundle 'bronson/vim-trailing-whitespace.git'
@@ -43,7 +44,7 @@ Bundle 'powerman/vim-plugin-ruscmd.git'
 Bundle 'https://github.com/vim-scripts/paredit.vim.git'
 Bundle 'git://github.com/tpope/vim-dispatch.git'
 Bundle 'git://github.com/tpope/vim-fireplace.git'
-Bundle 'git://github.com/tpope/vim-projectionist.git'
+Bundle 'https://github.com/tpope/vim-projectionist.git'
 Bundle 'git://github.com/tpope/vim-leiningen.git'
 Bundle 'tpope/vim-classpath.git'
 Bundle 'guns/vim-clojure-static.git'
@@ -91,6 +92,7 @@ let g:netrw_list_hide= '.*\.swp$,\~$'
 " map \R :Rubocop<cr>
 " map \rl :RememberSpecLine<cr>
 " map \rr :RunSpecLine<cr>
+" map \t :!node_modules/karma/bin/karma run -- %<cr>
 set nowrap
 
 " grep 'FHIRValueSets' **/*
