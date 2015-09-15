@@ -29,6 +29,7 @@
      javascript
      themes-megapack                    ;
      ansible
+     clj-refactor
      html
      smartparens
      (auto-completion :variables
@@ -166,18 +167,81 @@ before layers configuration."
   "Configuration function.
  This function is called at the very end of Spacemacs
 initialization after layers configuration."
-  (evil-leader/set-key-for-mode
-    'clojure-mode
-    "el" 'eval-sexp-fu-cider-pprint-eval-sexp-inner-sexp)
+ (evil-leader/set-key-for-mode
+   'clojure-mode
+   "med" 'eval-sexp-fu-cider-pprint-eval-sexp-inner-sexp)
 
-  (evil-leader/set-key-for-mode
-    'clojure-mode
-    "et" 'cider-test-run-test)
+;; (defun eval-coffee ()
+;;   (interactive)
+;;   (write-file (buffer-file-name))
+;;   (with-output-to-temp-buffer "coffee"
+;;      (print
+;;        (shell-command-to-string
+;;          (concat "coffee " (buffer-file-name) " -n")))))
+;;
+;; (defun eval-js ()
+;;   (interactive)
+;;   (write-file (buffer-file-name))
+;;   (with-output-to-temp-buffer "coffee"
+;;     (print
+;;      (shell-command-to-string
+;;       (concat "node " (buffer-file-name))))))
+;;
+;; (defun eval-jasmine ()
+;;   (interactive)
+;;   (write-file (buffer-file-name))
+;;   (with-output-to-temp-buffer "coffee"
+;;     (print
+;;      (shell-command-to-string
+;;       (concat "jasmine-node  " (buffer-file-name) " --coffee")))))
+;;
+;; (evil-leader/set-key-for-mode
+;;   'coffee-mode
+;;   "meb" 'eval-coffee)
+;;
+;; (evil-leader/set-key-for-mode
+;;   'coffee-mode
+;;   "met" 'eval-jasmine)
+;;
+;; (evil-leader/set-key-for-mode
+;;   'js2-mode
+;;   "mee" 'eval-js)
+;;
+;;  (evil-leader/set-key-for-mode
+;;     'clojure-mode
+ ;;    "met" 'cider-test-run-test)
 
-  (evil-leader/set-key-for-mode
-    'clojure-mode
-    "eT" 'cider-test-run-test)
-  )
+;;  (evil-leader/set-key-for-mode
+ ;;    'clojure-mode
+  ;;   "9" 'sp-rewrap-sexp)
+
+   ;;(evil-leader/set-key-for-mode
+    ;; 'clojure-mode
+     ;;"]" 'paredit-wrap-square)
+
+   ;;(evil-leader/set-key-for-mode
+     ;;'clojure-mode
+     ;;"}" 'paredit-wrap-curly)
+
+   ;;(evil-leader/set-key-for-mode
+     ;;'clojure-mode
+     ;;"0" 'paredit-splice-sexp-killing-backward)
+
+   ;;(evil-leader/set-key-for-mode
+     ;;'clojure-mode
+     ;;"," 'paredit-forward-slurp-sexp)
+
+  (require 'clj-refactor)
+
+  (defun my-clojure-mode-hook ()
+    (clj-refactor-mode 1)
+    (yas-minor-mode 1) ; for adding require/use/import
+    (cljr-add-keybindings-with-prefix "C-c C-m"))
+
+  (add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
+
+
+  (add-hook 'clojure-mode-hook (lambda () (smartparens-global-strict-mode))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
