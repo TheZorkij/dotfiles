@@ -165,71 +165,103 @@ before layers configuration."
 
 (defun dotspacemacs/config ()
   "Configuration function.
- This function is called at the very end of Spacemacs
-initialization after layers configuration."
- (evil-leader/set-key-for-mode
-   'clojure-mode
-   "med" 'eval-sexp-fu-cider-pprint-eval-sexp-inner-sexp)
+   This function is called at the very end of Spacemacs
+   initialization after layers configuration."
 
-;; (defun eval-coffee ()
-;;   (interactive)
-;;   (write-file (buffer-file-name))
-;;   (with-output-to-temp-buffer "coffee"
-;;      (print
-;;        (shell-command-to-string
-;;          (concat "coffee " (buffer-file-name) " -n")))))
-;;
-;; (defun eval-js ()
-;;   (interactive)
-;;   (write-file (buffer-file-name))
-;;   (with-output-to-temp-buffer "coffee"
-;;     (print
-;;      (shell-command-to-string
-;;       (concat "node " (buffer-file-name))))))
-;;
-;; (defun eval-jasmine ()
-;;   (interactive)
-;;   (write-file (buffer-file-name))
-;;   (with-output-to-temp-buffer "coffee"
-;;     (print
-;;      (shell-command-to-string
-;;       (concat "jasmine-node  " (buffer-file-name) " --coffee")))))
-;;
-;; (evil-leader/set-key-for-mode
-;;   'coffee-mode
-;;   "meb" 'eval-coffee)
-;;
-;; (evil-leader/set-key-for-mode
-;;   'coffee-mode
-;;   "met" 'eval-jasmine)
-;;
-;; (evil-leader/set-key-for-mode
-;;   'js2-mode
-;;   "mee" 'eval-js)
-;;
-;;  (evil-leader/set-key-for-mode
-;;     'clojure-mode
- ;;    "met" 'cider-test-run-test)
+  (evil-leader/set-key-for-mode
+    'clojure-mode
+    "med" 'eval-sexp-fu-cider-pprint-eval-sexp-inner-sexp)
 
-;;  (evil-leader/set-key-for-mode
- ;;    'clojure-mode
+  (evil-leader/set-key-for-mode
+    'clojure-mode
+    "mc" 'sp-copy-sexp)
+
+  (defun shellit (cmd)
+    (interactive)
+    (write-file (buffer-file-name))
+    (with-output-to-temp-buffer "*mytmp*"
+      (print (shell-command-to-string cmd))))
+
+  (defun eval-coffee ()
+    (interactive)
+    (compile (concat "coffee " (buffer-file-name) " -n")))
+
+  (defun eval-es6 ()
+    (interactive)
+    (compile (concat "babel-node " (buffer-file-name) " --presets es2015")))
+
+  (defun eval-js ()
+    (interactive)
+    (compile (concat "node " (buffer-file-name))))
+
+  (defun eval-test ()
+    (interactive)
+    (compile (concat "mocha --compilers mocha --compilers coffee:coffee-script/register " (buffer-file-name))))
+
+  (defun eval-js-test ()
+    (interactive)
+    (compile (concat "mocha " (buffer-file-name))))
+
+  (defun eval-sql ()
+    (interactive)
+    (let ((db "$DATABASE_URL")
+          (selection (buffer-substring-no-properties (region-beginning) (region-end))))
+      (compile (concat "psql " db " -c \"" selection "\""))))
+
+  (evil-leader/set-key-for-mode
+    'sql-mode
+    "meb" 'eval-sql)
+
+  (evil-leader/set-key-for-mode
+    'coffee-mode
+    "meb" 'eval-coffee)
+
+  (evil-leader/set-key-for-mode
+    'js2-mode
+    "meb" 'eval-es6)
+
+  (evil-leader/set-key-for-mode
+    'js-mode
+    "meb" 'eval-js)
+
+  (evil-leader/set-key-for-mode
+    'coffee-mode
+    "met" 'eval-test)
+
+  (evil-leader/set-key-for-mode
+    'js-mode
+    "met" 'eval-js-test)
+
+  ;;
+  ;; (evil-leader/set-key-for-mode
+  ;;   'js2-mode
+  ;;   "mee" 'eval-js)
+  ;;
+  ;;  (evil-leader/set-key-for-mode
+  ;;     'clojure-mode
+  ;;    "met" 'cider-test-run-test)
+
+  ;;  (evil-leader/set-key-for-mode
+  ;;    'clojure-mode
   ;;   "9" 'sp-rewrap-sexp)
 
-   ;;(evil-leader/set-key-for-mode
-    ;; 'clojure-mode
-     ;;"]" 'paredit-wrap-square)
+  ;;(evil-leader/set-key-for-mode
+  ;; 'clojure-mode
+  ;;"]" 'paredit-wrap-square)
 
-   ;;(evil-leader/set-key-for-mode
-     ;;'clojure-mode
-     ;;"}" 'paredit-wrap-curly)
+  ;;(evil-leader/set-key-for-mode
+  ;;'clojure-mode
+  ;;"}" 'paredit-wrap-curly)
 
-   ;;(evil-leader/set-key-for-mode
-     ;;'clojure-mode
-     ;;"0" 'paredit-splice-sexp-killing-backward)
+  ;;(evil-leader/set-key-for-mode
+  ;;'clojure-mode
+  ;;"0" 'paredit-splice-sexp-killing-backward)
 
-   ;;(evil-leader/set-key-for-mode
-     ;;'clojure-mode
-     ;;"," 'paredit-forward-slurp-sexp)
+  ;;(evil-leader/set-key-for-mode
+  ;;'clojure-mode
+  ;;"," 'paredit-forward-slurp-sexp)
+
+  (popwin-mode 1) 
 
   (require 'clj-refactor)
 
@@ -245,3 +277,35 @@ initialization after layers configuration."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ahs-case-fold-search nil)
+ '(ahs-default-range (quote ahs-range-whole-buffer))
+ '(ahs-idle-interval 0.25)
+ '(ahs-idle-timer 0 t)
+ '(ahs-inhibit-face-list nil)
+ '(popwin:special-display-config
+   (quote
+    (("^*Flycheck.+*$" :regexp t :position bottom :noselect t :dedicated t :stick t)
+     ("^*WoMan.+*$" :regexp t :position bottom)
+     ("*nosetests*" :position bottom :noselect nil :dedicated t :stick t)
+     ("*grep*" :position bottom :noselect nil :dedicated t :stick t)
+     ("*ert*" :position bottom :noselect nil :dedicated t :stick t)
+     (" *undo-tree*" :height 0.4 :position bottom :noselect nil :dedicated t :stick t)
+     ("*Async Shell Command*" :position bottom :noselect nil :dedicated t :stick t)
+     ("*Shell Command Output*" :position bottom :noselect nil :dedicated t :stick t)
+     ("*compilation*" :height 0.4 :position bottom :noselect nil :dedicated t :stick t)
+     ("*mytmp*"  :height 0.4      :position bottom :noselect nil :dedicated t :stick t)
+     ("*Help*" :height 0.4 :position bottom :noselect nil :dedicated t :stick t))))
+ '(ring-bell-function (quote ignore) t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+
