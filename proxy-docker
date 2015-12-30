@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+# This is my first script.
+
+# sudo apt-get install python-setuptools python-dev build-essential
+# sudo easy_install pip
+# sudo pip update &&  sudo pip upgrade
+# sudo pip install docker-py
+
+from docker import Client
+cli = Client(base_url='unix://var/run/docker.sock')
+
+base_dns = 'local'
+
+
+HOSTS_PATH = 'hosts'
+NGINX_PATH = 'nginx'
+
+HOSTS_PATH = '/etc/hosts'
+NGINX_PATH = '/etc/nginx/sites-enabled/default'
+
+hosts = []
+
+f = open(NGINX_PATH, 'w')
+for cnt in cli.containers():
+    name = cnt['Names'][0].replace('/','')
+    info =  cli.inspect_container(cnt['Id'])
+    ipaddr = info['NetworkSettings']['IPAddress']
+    full_name = "{0}.{1}".format(name, base_dns)
+    hosts.append([ipaddr, full_name])
+    for port in [80, 3000,3001,3002, 3003,3004, 3005, 3006]:
+        str = """
+upstream {upstr} {{
+  server {ipaddr}:{port};
+  keepalive 32;
+}}
+map $http_upgrade $connection_upgrade {{
+  default upgrade;
+  ''      close;
+}}
+
+server {{
+  server_name .{full_name};
+  listen   {port};
+  location / {{
+    proxy_pass http://{upstr};
+    proxy_set_header Host            $host;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_http_version 1.1;
+    proxy_set_header   Upgrade          $http_upgrade;
+    proxy_set_header   Connection       $connection_upgrade;
+  }}
+}}
+        """
+        f.write(str.format(ipaddr = ipaddr, upstr = '{0}-{1}'.format(name,port), port=port, name = name, full_name = full_name))
+
+f.write("""
+    server {
+      server_name blog.dev.health-samurai.io;
+      listen   80;
+      root /home/nicola/slides;
+      location / {
+          autoindex on;
+      }
+    }
+""")
+
+f.close()
+
+f = open(HOSTS_PATH, 'w')
+for x in hosts:
+    f.write("{0} {1}\n".format(x[0],x[1]))
+    f.write("{0} nicola.{1}\n".format(x[0],x[1]))
+    f.write("{0} test.{1}\n".format(x[0],x[1]))
+    f.write("{0} test2.{1}\n".format(x[0],x[1]))
+f.close()
