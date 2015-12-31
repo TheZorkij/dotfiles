@@ -261,8 +261,8 @@ for s = 1, screen.count() do
 
     right_layout:add(cpuwidget)
     right_layout:add(memwidget)
+    right_layout:add(my_widget("acpi | sed -e 's/Unknown, //g' | sed ':a;N;$!ba;s/\\n/ /g' | sed 's/Discharging, /#/g' | sed 's/remaining /+/g' | sed -e 's/Battery [012]. /🗲/g'"))
     right_layout:add(batwidget)
-    --right_layout:add(my_widget("acpi | sed -e 's/Unknown, //g' | sed ':a;N;$!ba;s/\\n/ /g' | sed 's/Discharging, /#/g' | sed 's/remaining /+/g' | sed -e 's/Battery [012]. /🗲/g'"))
 
     --right_layout:add(mylayoutbox[s])
 
