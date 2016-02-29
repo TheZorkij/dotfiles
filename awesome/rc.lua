@@ -219,6 +219,10 @@ memwidget:set_background_color("#494B4F")
 memwidget:set_color("#FF5656")
 vicious.register(memwidget, vicious.widgets.mem, "$1", 3)
 
+
+wifiwidget = wibox.widget.textbox()
+vicious.register(wifiwidget, vicious.widgets.wifi, ' <span color="#7F9F7F">${ssid}</span>@<span color="#7F9F7F">${linp}%</span> ', 2, "wlp3s0")
+
 --cpuwidget:set_gradient_colors({ "#FF5656", "#88A175", "#AECF96" })
 vicious.register(cpuwidget, vicious.widgets.cpu, "$1", 3)
 
@@ -261,6 +265,7 @@ for s = 1, screen.count() do
 
     right_layout:add(cpuwidget)
     right_layout:add(memwidget)
+    right_layout:add(wifiwidget)
     right_layout:add(my_widget("acpi | sed -e 's/Unknown, //g' | sed ':a;N;$!ba;s/\\n/ /g' | sed 's/Discharging, /#/g' | sed 's/remaining /+/g' | sed -e 's/Battery [012]. /🗲/g'"))
     right_layout:add(batwidget)
 

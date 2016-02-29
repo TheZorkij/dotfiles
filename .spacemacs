@@ -26,10 +26,13 @@
      shell
      syntax-checking
      clojure
+     (haskell :variables haskell-enable-ghc-mod-support nil)
      javascript
+     java
      themes-megapack                    ;
      ansible
      clj-refactor
+     c-c++
      html
      smartparens
      (auto-completion :variables
@@ -158,6 +161,7 @@ before layers configuration."
    git-magit-status-fullscreen t
    truncate-lines t
    web-mode-markup-indent-offset 2
+
    )
   ;; User initialization goes here
 
@@ -175,6 +179,9 @@ before layers configuration."
   (evil-leader/set-key-for-mode
     'clojure-mode
     "mc" 'sp-copy-sexp)
+
+  (setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list)
+
 
   (defun shellit (cmd)
     (interactive)
@@ -194,13 +201,9 @@ before layers configuration."
     (interactive)
     (compile (concat "node " (buffer-file-name))))
 
-  (defun eval-test ()
+  (defun eval-coffee-test ()
     (interactive)
-    (compile (concat "mocha --compilers mocha --compilers coffee:coffee-script/register " (buffer-file-name))))
-
-  (defun eval-js-test ()
-    (interactive)
-    (compile (concat "mocha " (buffer-file-name))))
+    (shellit (concat "mocha --compilers mocha --compilers coffee:coffee-script/register " (buffer-file-name))))
 
   (defun eval-sql ()
     (interactive)
@@ -226,11 +229,21 @@ before layers configuration."
 
   (evil-leader/set-key-for-mode
     'coffee-mode
-    "met" 'eval-test)
+    "met" 'eval-coffee-test)
 
   (evil-leader/set-key-for-mode
     'js-mode
     "met" 'eval-js-test)
+
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+  (add-to-list 'exec-path "~/.local/bin/")
+
+
+
+  (when (configuration-layer/layer-usedp 'haskell)
+    (add-hook 'haskell-interactive-mode-hook
+              (lambda ()
+                (setq-local evil-move-cursor-back nil))))
 
   ;;
   ;; (evil-leader/set-key-for-mode
@@ -261,7 +274,7 @@ before layers configuration."
   ;;'clojure-mode
   ;;"," 'paredit-forward-slurp-sexp)
 
-  (popwin-mode 1) 
+  (popwin-mode 1)
 
   (require 'clj-refactor)
 
