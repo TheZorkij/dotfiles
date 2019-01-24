@@ -109,3 +109,6 @@ let g:clojure_syntax_keywords = {
       \ 'clojureMacro': ["defproject", "fact"],
       \ 'clojureFunc': ["string/join", "string/replace"]
       \ }
+
+imap fd <Esc>
+let mapleader = "\<Space>"
